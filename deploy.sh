@@ -1,17 +1,7 @@
 #!/bin/sh
+kubectl delete service tranngocdan-nc-student-service
+kubectl delete deployment tranngocdan-nc-student
 kubectl create -f provision/k8s/deployment.yaml
+kubectl get service tranngocdan-nc-student-service
 
-# # get deployment
-# kubectl get deployments
-
-# # get service
-# kubectl get services
-
-# # delete service
-# kubectl delete service tranngocdan-nc_student
-# kubectl delete service nc_student
-
-# # get pods
-# kubectl get pods
-
-# minikube service tranngocdan-nc_student-service --url
+# minikube service tranngocdan-nc-student-service --url
