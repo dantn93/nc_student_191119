@@ -8,7 +8,8 @@ import (
 )
 
 func DeleteStudentById(id int) (interface{}, error) {
-	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
 	result := make(map[string]interface{})
 	err := Client.Database(DbName).Collection(ColName).FindOneAndDelete(ctx, bson.M{"id": id}).Decode(&result)
 	if err != nil {
@@ -18,7 +19,8 @@ func DeleteStudentById(id int) (interface{}, error) {
 }
 
 func DeleteStudentByIdReq(id int) (interface{}, error) {
-	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
 	result := make(map[string]interface{})
 	err := Client.Database(DbName).Collection(ColName).FindOneAndDelete(ctx, bson.M{"id": id}).Decode(&result)
 	if err != nil {

@@ -5,22 +5,13 @@ type Student struct {
 	FirstName string `json:"first_name" bson:"first_name"`
 	LastName  string `json:"last_name" bson:"last_name"`
 	ClassName string `json:"class_name" bson:"class_name"`
-	Email     string `json:"email"`
-	Age       int    `json:"age"`
+	Email     string `json:"email" bson:"email"`
+	Age       int    `json:"age" bson:"age"`
 }
 
 type Error struct {
 	Code int
 	Msg  string
-}
-
-type StudentUpdateRequest struct {
-	ID        int    `json:"id,omitempty" bson:"id,omitempty"`
-	FirstName string `json:"first_name"`
-	LastName  string `json:"last_name"`
-	ClassName string `json:"class_name" bson:"class_name"`
-	Age       int    `json:"age"`
-	Email     string `json:"email"`
 }
 
 type StudentSearchRequest struct {

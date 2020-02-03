@@ -11,7 +11,8 @@ import (
 )
 
 func GetAllStudent() ([]*Student, error) {
-	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
 	filter := bson.M{} //map[string]interface{}
 	cur, err := Client.Database(DbName).Collection(ColName).Find(ctx, filter)
 	if err != nil {
@@ -19,7 +20,6 @@ func GetAllStudent() ([]*Student, error) {
 		return nil, err
 	}
 
-	ctx, _ = context.WithTimeout(context.Background(), 5*time.Second)
 	var students []*Student
 	err = cur.All(ctx, &students)
 	if err != nil {
@@ -31,7 +31,8 @@ func GetAllStudent() ([]*Student, error) {
 }
 
 func SearchStudent(req StudentSearchRequest) (*[]Student, error) {
-	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
 	filter := bson.M{}
 	if req.FirstName != "" {
 		filter["first_name"] = primitive.Regex{Pattern: req.FirstName, Options: "i"}
@@ -58,7 +59,6 @@ func SearchStudent(req StudentSearchRequest) (*[]Student, error) {
 		return nil, err
 	}
 
-	ctx, _ = context.WithTimeout(context.Background(), 5*time.Second)
 	var students []Student
 	err = cur.All(ctx, &students)
 	if err != nil {
@@ -82,7 +82,8 @@ func GroupByLastName() (interface{}, error) {
 }
 
 func SearchStudentSimple(req StudentSearchRequest) (interface{}, error) {
-	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
 	filter := bson.M{"first_name": req.FirstName, "last_name": req.LastName}
 	cur, err := Client.Database(DbName).Collection(ColName).Find(ctx, filter)
 	if err != nil {
@@ -90,7 +91,6 @@ func SearchStudentSimple(req StudentSearchRequest) (interface{}, error) {
 		return nil, err
 	}
 
-	ctx, _ = context.WithTimeout(context.Background(), 5*time.Second)
 	var students []Student
 	err = cur.All(ctx, &students)
 	if err != nil {
@@ -102,9 +102,9 @@ func SearchStudentSimple(req StudentSearchRequest) (interface{}, error) {
 }
 
 func GetStudentById(id int) (*Student, error) {
-	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
 	var student Student
-	fmt.Println("ID: ", id)
 	err := Client.Database(DbName).Collection(ColName).FindOne(ctx, bson.M{"id": id}).Decode(&student)
 	if err != nil {
 		fmt.Println(err)

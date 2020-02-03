@@ -26,11 +26,9 @@ func Staff(e *echo.Echo) {
 func Public(e *echo.Echo) {
 	g := e.Group("/api/student/v1/public")
 	g.GET("/health", handler.HealthCheck)
-	g.GET("/test", handler.TestDB)
 	g.GET("/student", handler.GetAllStudents)
 	g.GET("/student/group/last_name", handler.GroupLastName)
 	g.GET("/student/id/:id", handler.GetStudentById)
 	g.PATCH("/student", handler.SearchStudent)
 	g.PATCH("/student/simple/", handler.SearchStudentSimple)
-
 }

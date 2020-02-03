@@ -34,7 +34,8 @@ func init() {
 
 func insertNumber() interface{} {
 	collection := Client.Database("testing").Collection("numbers")
-	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
 	res, err := collection.InsertOne(ctx, bson.M{"name": "pi", "value": 3.14159})
 	if err != nil {
 		return nil
@@ -49,12 +50,13 @@ func connect() {
 	clientOptions.SetMaxPoolSize(100)
 	clientOptions.SetMinPoolSize(4)
 	clientOptions.SetReadPreference(readpref.Nearest())
-	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
 	client, err := mongo.Connect(ctx, clientOptions)
 	if err != nil {
 		log.Fatalf("connect error: %v", err)
 	}
-	ctx, _ = context.WithTimeout(context.Background(), 10*time.Second)
+
 	err = client.Ping(ctx, readpref.Primary())
 	if err != nil {
 		log.Fatalf("ping error: %v", err)

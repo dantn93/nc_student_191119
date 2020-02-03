@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/labstack/echo/v4"
-	"github.com/labstack/echo/v4/middleware"
 	"github.com/golang191119/nc_student/config"
 	"github.com/golang191119/nc_student/route"
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 func main() {
@@ -16,5 +16,5 @@ func main() {
 	e.Use(middleware.Recover())
 	route.All(e)
 
-	log.Println(e.Start(":9090"))
+	log.Println(e.Start(":8080"))
 }

@@ -10,7 +10,8 @@ import (
 
 func GetNextSequenceValue(sequenceName string) (id int, err error) {
 	collection := Client.Database(DbName).Collection("counters")
-	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
 	doc := make(map[string]interface{})
 	collection.FindOneAndUpdate(ctx,
 		bson.M{"id": sequenceName},
@@ -36,7 +37,8 @@ func GetNextSequenceValue(sequenceName string) (id int, err error) {
 
 func AddStudent(student *Student) (interface{}, error) {
 	collection := Client.Database(DbName).Collection(ColName)
-	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
 	id, err := GetNextSequenceValue("student_id")
 	if err != nil {
 		return nil, err
@@ -49,10 +51,11 @@ func AddStudent(student *Student) (interface{}, error) {
 	return res, err
 }
 
-func UpdateStudent(student *StudentUpdateRequest) (interface{}, error) {
+func UpdateStudent(student *Student) (interface{}, error) {
 	collection := Client.Database(DbName).Collection(ColName)
-	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
-	filter := bson.M{"email": student.Email}
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	filter := bson.M{"id": student.ID}
 	update := bson.M{"$set": student}
 	res, err := collection.UpdateOne(ctx, filter, update)
 	return res, err

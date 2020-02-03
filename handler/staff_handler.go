@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 	"strconv"
@@ -25,11 +24,10 @@ func AddStudent(c echo.Context) error {
 }
 
 func UpdateStudent(c echo.Context) error {
-	var student db.StudentUpdateRequest
+	var student db.Student
 	if err := c.Bind(&student); err != nil {
 		return c.JSON(http.StatusBadRequest, db.Error{Code: http.StatusBadRequest, Msg: "bad request"})
 	}
-	fmt.Println(student)
 	res, err := db.UpdateStudent(&student)
 	if err != nil {
 		log.Printf("update error :%v", err)
