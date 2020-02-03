@@ -16,7 +16,7 @@ spec:
       - name: tranngocdan-nc-student
         image: tranngocdan/tranngocdan-nc-student
         ports:
-          - containerPort: 8080
+          - containerPort: 9090
             name: web
         resources:
           requests:
@@ -34,7 +34,7 @@ spec:
   type: NodePort                 # If you're deploying on cloud, you can use `type: LoadBalancer`. It will automatically provision a load balancer with the cloud provider that will route traffic to your application.
   ports:                         # Take incoming HTTP requests on port 9090 and forward them to the targetPort of 8080
   - name: http
-    port: 9090
-    targetPort: 8080
+    port: 9091
+    targetPort: 9090
   selector:
     app: tranngocdan-nc-student          # Map any pod with name tranngocdan-nc_student to this service
